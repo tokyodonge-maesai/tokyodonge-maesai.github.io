@@ -3,287 +3,105 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tokyo Donge แม่สาย</title>
-
+<title>TOKYO DONGE แม่สาย</title>
 <style>
-body{
-font-family:sans-serif;
-background:#fff8f0;
-margin:0;
-padding:20px;
-}
-
-.container{
-max-width:600px;
-margin:auto;
-}
-
-.logo{
-width:180px;
-display:block;
-margin:auto;
-border-radius:50%;
-}
-
-h1{
-text-align:center;
-color:#d32f2f;
-}
-
-.menu{
-background:white;
-padding:15px;
-margin:10px 0;
-border-radius:12px;
-box-shadow:0 2px 8px rgba(0,0,0,.1);
-}
-
-button{
-background:#ff5722;
-color:white;
-border:none;
-padding:10px 15px;
-border-radius:8px;
-cursor:pointer;
-}
-
-input,textarea{
-width:100%;
-padding:10px;
-margin-top:8px;
-border:1px solid #ccc;
-border-radius:8px;
-}
-
-.total{
-font-size:22px;
-font-weight:bold;
-color:#d32f2f;
-}
-
-.qr{
-text-align:center;
-margin-top:20px;
-}
-
-.submit{
-width:100%;
-font-size:18px;
-margin-top:20px;
-}
+body{margin:0;font-family:Arial,sans-serif;background:#f7f1e8}
+.container{max-width:700px;margin:auto;padding:15px}
+.logo{width:140px;display:block;margin:15px auto}
+h1{text-align:center;color:#d62828;margin:5px 0}
+.subtitle{text-align:center;color:#666;margin-bottom:20px}
+.food-card{background:#fff;border-radius:18px;overflow:hidden;margin-bottom:18px;box-shadow:0 3px 12px rgba(0,0,0,.12)}
+.food-image{width:100%;height:260px;object-fit:cover}
+.food-body{padding:15px}
+.food-price{color:#ff5722;font-size:24px;font-weight:bold}
+.qty{display:flex;gap:10px;align-items:center;margin-top:10px}
+.qty button{width:40px;height:40px;border:none;border-radius:50%;background:#ff5722;color:#fff;font-size:20px}
+input,textarea{width:100%;padding:12px;margin-top:10px;border-radius:10px;border:1px solid #ccc;box-sizing:border-box}
+.totalbox{background:#fff;padding:15px;border-radius:15px;margin-top:15px}
+.total{font-size:28px;font-weight:bold;color:#d62828}
+.submit{width:100%;padding:15px;background:#d62828;color:#fff;border:none;border-radius:12px;font-size:20px;margin-top:15px}
 </style>
-
-  .food-card{
-background:#fff;
-border-radius:20px;
-overflow:hidden;
-margin-bottom:20px;
-box-shadow:0 4px 15px rgba(0,0,0,.08);
-}
-
-.food-image{
-width:100%;
-height:260px;
-object-fit:cover;
-display:block;
-}
-
-.food-body{
-padding:15px;
-}
-
-.food-body h3{
-margin:0;
-font-size:20px;
-}
-
-.food-price{
-font-size:24px;
-font-weight:bold;
-color:#ff5722;
-margin:10px 0;
-}
-
-.qty{
-display:flex;
-align-items:center;
-gap:10px;
-}
-
-.qty button{
-width:40px;
-height:40px;
-border:none;
-border-radius:50%;
-background:#ff5722;
-color:white;
-font-size:20px;
-cursor:pointer;
-}
 </head>
 <body>
-
 <div class="container">
-
 <img src="TOKYODONGE.jpg" class="logo">
-
 <h1>TOKYO DONGE</h1>
+<div class="subtitle">🍣 แม่สาย • อาหารดองสไตล์ญี่ปุ่น 🇯🇵</div>
 
-<p style="
-text-align:center;
-font-size:18px;
-color:#666;
-margin-top:-10px;
-margin-bottom:25px;">
-🍣 แม่สาย • อาหารดองสไตล์ญี่ปุ่น 🇯🇵
-</p>
-  
 <div id="menu"></div>
 
 <h2>ข้อมูลลูกค้า</h2>
-
 <input id="name" placeholder="ชื่อ">
 <input id="phone" placeholder="เบอร์โทร">
 <textarea id="address" placeholder="ที่อยู่จัดส่ง"></textarea>
 
+<div class="totalbox">
 <h2>ยอดรวม</h2>
-
 <div class="total" id="total">0 บาท</div>
-
-<div class="qr">
+<div style="text-align:center;margin-top:10px">
 <h3>ชำระเงิน PromptPay</h3>
-<p>0650791934</p>
+<p><b>0650791934</b></p>
 </div>
-
-<button class="submit" onclick="sendOrder()">
-สั่งซื้อ
-</button>
-
+<button class="submit" onclick="sendOrder()">สั่งซื้อ</button>
+</div>
 </div>
 
 <script>
-
-const menuData = [
-{
-name:"ข้าวหน้ากุ้ง&แซลมอนดอง",
-price:179,
-image:"salmonshrimp.jpg"
-},
-{
-name:"ข้าวหน้ากุ้งดองเกาหลี",
-price:169,
-image:"shrimp.jpg"
-},
-{
-name:"ข้าวหน้าแซลมอนดองเกาหลี",
-price:198,
-image:"salmon.jpg"
-},
-{
-name:"สาหร่ายเกาหลี",
-price:30,
-image:"seaweed.jpg"
-}
+const menuData=[
+{name:"ข้าวหน้ากุ้ง&แซลมอนดอง",price:179,image:"salmonshrimp.jpg"},
+{name:"ข้าวหน้ากุ้งดองเกาหลี",price:169,image:"shrimp.jpg"},
+{name:"ข้าวหน้าแซลมอนดองเกาหลี",price:198,image:"salmon.jpg"},
+{name:"สาหร่ายเกาหลี",price:30,image:"seaweed.jpg"}
 ];
-  
-const cart = {};
 
-const menuDiv = document.getElementById("menu");
+const cart={};
+const menu=document.getElementById("menu");
 
 menuData.forEach(item=>{
-
 cart[item.name]=0;
-
-menuDiv.innerHTML += `
+menu.innerHTML+=`
 <div class="food-card">
-
 <img src="${item.image}" class="food-image">
-
 <div class="food-body">
-
 <h3>${item.name}</h3>
-
-<div class="food-price">
-${item.price} บาท
-</div>
-
+<div class="food-price">${item.price} บาท</div>
 <div class="qty">
-
-<button onclick="changeQty('${item.name}',-1)">
-−
-</button>
-
-<span id="${item.name}">
-0
-</span>
-
-<button onclick="changeQty('${item.name}',1)">
-+
-</button>
-
+<button onclick="changeQty('${item.name}',-1)">-</button>
+<span id="${item.name}">0</span>
+<button onclick="changeQty('${item.name}',1)">+</button>
 </div>
-
 </div>
-
-</div>
-`;
+</div>`;
+});
 
 function changeQty(name,num){
-
 cart[name]+=num;
-
 if(cart[name]<0) cart[name]=0;
-
 document.getElementById(name).innerText=cart[name];
-
 updateTotal();
-
 }
 
 function updateTotal(){
-
 let total=0;
-
-menuData.forEach(item=>{
-
-total += cart[item.name] * item.price;
-
-});
-
-document.getElementById("total").innerText =
-total + " บาท";
-
+menuData.forEach(i=> total += i.price*cart[i.name]);
+document.getElementById("total").innerText=total+" บาท";
 }
 
 function sendOrder(){
-
-const data = {
-
+const data={
 name:document.getElementById("name").value,
 phone:document.getElementById("phone").value,
 address:document.getElementById("address").value,
 items:JSON.stringify(cart)
-
 };
 
 fetch("https://script.google.com/macros/s/AKfycbxmUldm9fwW8g_hUPBgpCCaDXQhys0HUFHPRZ_yU9XJGozv4IOkAfn1CX_jTdsSlS_1/exec",{
 method:"POST",
 body:JSON.stringify(data)
 })
-.then(()=>{
-
-alert("ส่งออเดอร์เรียบร้อย");
-
-})
-.catch(()=>{
-
-alert("เกิดข้อผิดพลาด");
-
-});
-
+.then(()=>alert("ส่งออเดอร์เรียบร้อย"))
+.catch(()=>alert("เกิดข้อผิดพลาด"));
 }
-
 </script>
-
 </body>
 </html>
