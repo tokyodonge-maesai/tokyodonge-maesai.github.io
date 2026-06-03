@@ -73,6 +73,53 @@ margin-top:20px;
 }
 </style>
 
+  .food-card{
+background:#fff;
+border-radius:20px;
+overflow:hidden;
+margin-bottom:20px;
+box-shadow:0 4px 15px rgba(0,0,0,.08);
+}
+
+.food-image{
+width:100%;
+height:260px;
+object-fit:cover;
+display:block;
+}
+
+.food-body{
+padding:15px;
+}
+
+.food-body h3{
+margin:0;
+font-size:20px;
+}
+
+.food-price{
+font-size:24px;
+font-weight:bold;
+color:#ff5722;
+margin:10px 0;
+}
+
+.qty{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.qty button{
+width:40px;
+height:40px;
+border:none;
+border-radius:50%;
+background:#ff5722;
+color:white;
+font-size:20px;
+cursor:pointer;
+}
 </head>
 <body>
 
@@ -108,12 +155,28 @@ margin-top:20px;
 <script>
 
 const menuData = [
-{name:"ข้าวหน้ากุ้ง&แซลมอน",price:179},
-{name:"ข้าวหน้าแซลมอน",price:198},
-{name:"ลาบปลาแซลมอน",price:175},
-{name:"ไข่ดอง",price:25}
+{
+name:"ข้าวหน้ากุ้ง&แซลมอนดอง",
+price:179,
+image:"salmonshrimp.jpg"
+},
+{
+name:"ข้าวหน้ากุ้งดองเกาหลี",
+price:169,
+image:"shrimp.jpg"
+},
+{
+name:"ข้าวหน้าแซลมอนดองเกาหลี",
+price:198,
+image:"salmon.jpg"
+},
+{
+name:"สาหร่ายเกาหลี",
+price:30,
+image:"seaweed.jpg"
+}
 ];
-
+  
 const cart = {};
 
 const menuDiv = document.getElementById("menu");
@@ -123,22 +186,38 @@ menuData.forEach(item=>{
 cart[item.name]=0;
 
 menuDiv.innerHTML += `
-<div class="menu">
-<h3>${item.name}</h3>
-<p>${item.price} บาท</p>
+<div class="food-card">
 
-<button onclick="changeQty('${item.name}',-1)">-</button>
+<img src="${item.image}" class="food-image">
+
+<div class="food-body">
+
+<h3>${item.name}</h3>
+
+<div class="food-price">
+${item.price} บาท
+</div>
+
+<div class="qty">
+
+<button onclick="changeQty('${item.name}',-1)">
+−
+</button>
 
 <span id="${item.name}">
 0
 </span>
 
-<button onclick="changeQty('${item.name}',1)">+</button>
+<button onclick="changeQty('${item.name}',1)">
++
+</button>
+
+</div>
+
+</div>
 
 </div>
 `;
-
-});
 
 function changeQty(name,num){
 
