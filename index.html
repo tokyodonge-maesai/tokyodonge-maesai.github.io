@@ -3,99 +3,105 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TOKYO DONGE แม่สาย</title>
+<title>TOKYO DONGE V4</title>
 <style>
-body{margin:0;font-family:Arial,sans-serif;background:#f5f5f5}
-.container{max-width:700px;margin:auto;background:#fff;min-height:100vh}
-.header{text-align:center;padding:20px;background:#fff}
-.logo{width:120px}
-h1{margin:5px 0;color:#e53935}
-.subtitle{color:#666}
-.food-card{background:#fff;margin:12px;border-radius:16px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.08)}
-.food-image{width:100%;height:220px;object-fit:cover}
-.food-body{padding:15px}
-.food-price{font-size:24px;font-weight:bold;color:#00B14F}
-.qty button{width:40px;height:40px;border:none;border-radius:50%;background:#00B14F;color:#fff;font-size:24px}
-.qty{display:flex;gap:10px;align-items:center}
-.form{padding:15px}
-input,textarea{width:100%;padding:12px;margin:6px 0;box-sizing:border-box}
-.cart{position:sticky;bottom:0;background:#00B14F;color:#fff;padding:15px;text-align:center;font-size:24px;font-weight:bold}
-.submit{width:100%;padding:15px;border:none;background:#ff6a00;color:#fff;font-size:20px;border-radius:10px}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f5f5f5}
+.hero{position:relative}
+.hero img{width:100%;height:220px;object-fit:cover}
+.overlay{position:absolute;bottom:0;left:0;right:0;padding:16px;background:linear-gradient(transparent,rgba(0,0,0,.8));color:#fff}
+.logo{width:70px;height:70px;border-radius:50%;border:3px solid #fff}
+.cat{display:flex;gap:10px;overflow:auto;padding:10px;background:#fff;position:sticky;top:0}
+.cat span{padding:8px 14px;background:#eee;border-radius:20px;white-space:nowrap}
+.card{display:flex;background:#fff;margin:10px;border-radius:16px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.card img{width:120px;height:120px;object-fit:cover}
+.info{padding:10px;flex:1}
+.price{color:#00B14F;font-size:22px;font-weight:bold}
+.add{float:right;width:42px;height:42px;border:none;border-radius:50%;background:#00B14F;color:#fff;font-size:26px}
+.cart{position:fixed;bottom:0;left:0;right:0;background:#00B14F;color:#fff;padding:14px;display:flex;justify-content:space-between}
+.cart button{background:#fff;color:#00B14F;border:none;padding:10px 18px;border-radius:10px;font-weight:bold}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5)}
+.box{background:#fff;width:92%;max-width:420px;margin:8% auto;padding:20px;border-radius:16px}
+input,textarea{width:100%;padding:10px;margin-top:8px}
+.submit{width:100%;padding:12px;border:none;background:#ff6a00;color:#fff;border-radius:10px;margin-top:10px}
 </style>
 </head>
 <body>
-<div class="container">
-<div class="header">
+
+<div class="hero">
+<img src="salmonshrimp.jpg">
+<div class="overlay">
 <img src="TOKYODONGE.jpg" class="logo">
-<h1>TOKYO DONGE</h1>
-<div class="subtitle">แม่สาย • อาหารดองสไตล์ญี่ปุ่น</div>
+<h2>TOKYO DONGE</h2>
+<div>⭐ 4.9 • อาหารดองสไตล์ญี่ปุ่น • แม่สาย</div>
+</div>
+</div>
+
+<div class="cat">
+<span>🔥 เมนูแนะนำ</span>
+<span>🍣 ข้าวดอง</span>
+<span>🥬 เครื่องเคียง</span>
 </div>
 
 <div id="menu"></div>
+<div style="height:90px"></div>
 
-<div class="form">
-<h2>ข้อมูลลูกค้า</h2>
-<input id="name" placeholder="ชื่อ">
-<input id="phone" placeholder="เบอร์โทร">
-<textarea id="address" placeholder="ที่อยู่จัดส่ง"></textarea>
-<button class="submit" onclick="sendOrder()">สั่งซื้อ</button>
+<div class="cart">
+<div>🛒 <span id="count">0</span> รายการ | ฿<span id="total">0</span></div>
+<button onclick="checkout()">สั่งซื้อ</button>
 </div>
 
-<div class="cart">ยอดรวม: <span id="total">0</span> บาท</div>
+<div class="modal" id="modal">
+<div class="box">
+<h3>ข้อมูลจัดส่ง</h3>
+<input id="name" placeholder="ชื่อ">
+<input id="phone" placeholder="เบอร์โทร">
+<textarea id="address" placeholder="ที่อยู่"></textarea>
+<p><b>PromptPay: 0650791934</b></p>
+<button class="submit" onclick="sendOrder()">ยืนยันคำสั่งซื้อ</button>
+</div>
 </div>
 
 <script>
-const SCRIPT_URL="https://script.google.com/macros/s/AKfycbxmUldm9fwW8g_hUPBgpCCaDXQhys0HUFHPRZ_yU9XJGozv4IOkAfn1CX_jTdsSlS_1/exec";
-
-const menuData=[
-{name:"ข้าวหน้ากุ้ง&แซลมอนดอง",price:179,image:"salmonshrimp.jpg"},
-{name:"ข้าวหน้ากุ้งดองเกาหลี",price:169,image:"shrimp.jpg"},
-{name:"ข้าวหน้าแซลมอนดองเกาหลี",price:198,image:"salmon.jpg"},
-{name:"สาหร่าย",price:30,image:"seaweed.jpg"}
+const URL='https://script.google.com/macros/s/AKfycbxmUldm9fwW8g_hUPBgpCCaDXQhys0HUFHPRZ_yU9XJGozv4IOkAfn1CX_jTdsSlS_1/exec';
+const menu=[
+{name:'ข้าวหน้ากุ้ง&แซลมอนดอง',price:179,img:'salmonshrimp.jpg',desc:'ขายดี #1'},
+{name:'ข้าวหน้ากุ้งดองเกาหลี',price:169,img:'shrimp.jpg',desc:'กุ้งดองเกาหลี'},
+{name:'ข้าวหน้าแซลมอนดองเกาหลี',price:198,img:'salmon.jpg',desc:'แซลมอนสดชิ้นใหญ่'},
+{name:'สาหร่าย',price:30,img:'seaweed.jpg',desc:'เครื่องเคียงยอดนิยม'}
 ];
-
 let cart={};
-
 function render(){
-document.getElementById('menu').innerHTML=menuData.map((m,i)=>`
-<div class="food-card">
-<img src="${m.image}" class="food-image">
-<div class="food-body">
+document.getElementById('menu').innerHTML=menu.map((m,i)=>`
+<div class="card">
+<img src="${m.img}">
+<div class="info">
 <h3>${m.name}</h3>
-<div class="food-price">฿${m.price}</div>
-<div class="qty">
-<button onclick="change(${i},-1)">-</button>
-<span>${cart[i]||0}</span>
-<button onclick="change(${i},1)">+</button>
-</div>
+<div>${m.desc}</div>
+<div class="price">฿${m.price}</div>
+<button class="add" onclick="add(${i})">+</button>
 </div>
 </div>`).join('');
-updateTotal();
 }
-
-function change(i,n){
-cart[i]=(cart[i]||0)+n;
-if(cart[i]<0) cart[i]=0;
-render();
+function add(i){
+cart[i]=(cart[i]||0)+1; update();
 }
-
-function updateTotal(){
-let t=0;
-menuData.forEach((m,i)=>t+=m.price*(cart[i]||0));
-document.getElementById('total').innerText=t;
+function update(){
+let c=0,t=0;
+menu.forEach((m,i)=>{c+=(cart[i]||0);t+=m.price*(cart[i]||0);});
+count.innerText=c; total.innerText=t;
 }
-
+function checkout(){
+if((+count.innerText)==0){alert('กรุณาเลือกสินค้า');return;}
+modal.style.display='block';
+}
 function sendOrder(){
-const items=menuData.filter((m,i)=>(cart[i]||0)>0).map((m,i)=>`${m.name} x ${cart[i]||0}`).join(", ");
-fetch(SCRIPT_URL,{
-method:"POST",
-body:JSON.stringify({
+const items=menu.filter((m,i)=>cart[i]).map((m,i)=>m.name+' x '+cart[i]).join(', ');
+fetch(URL,{method:'POST',body:JSON.stringify({
 name:document.getElementById('name').value,
 phone:document.getElementById('phone').value,
 address:document.getElementById('address').value,
 items:items
-})
-}).then(()=>alert("ส่งออเดอร์สำเร็จ"));
+})}).then(()=>{alert('ส่งออเดอร์สำเร็จ');location.reload();});
 }
 render();
 </script>
