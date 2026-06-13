@@ -44,26 +44,40 @@ button{background:#16a34a;color:white;border:none;border-radius:10px;font-size:1
 const WEBAPP="https://script.google.com/macros/s/AKfycbwPnL9wsILkRCIm4Hl2f6xMJKnjaohT4jUck2h_t-jcRt0L0osl4Xl9vgZCcV9imFgR/exec";
 
 async function order(){
- try{
-  const qty=parseInt(document.getElementById('qty').value||1);
+try {
+  const qty = parseInt(document.getElementById('qty').value || 1);
 
-  const response = await fetch(WEBAPP,{
-    method:'POST',
-    headers:{'Content-Type':'text/plain;charset=utf-8'},
-    body:JSON.stringify({
-      name:document.getElementById('name').value,
-      phone:document.getElementById('phone').value,
-      address:document.getElementById('address').value,
-      items:'กุ้งดองเกาหลี | น้ำจิ้ม:'+document.getElementById('sauce').value+' | กระเทียม:'+document.getElementById('garlic').value,
-      quantity:qty,
-      total:qty*145
+  const response = await fetch(WEBAPP, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'text/plain;charset=utf-8'
+    },
+    body: JSON.stringify({
+      name: document.getElementById('name').value,
+      phone: document.getElementById('phone').value,
+      address: document.getElementById('address').value,
+      items: 'กุ้งดองเกาหลี | น้ำจิ้ม: ' +
+             document.getElementById('sauce').value +
+             ' | กระเทียม: ' +
+             document.getElementById('garlic').value,
+      quantity: qty,
+      total: qty * 145
     })
   });
 
-  alert('ส่งออเดอร์แล้ว กรุณาตรวจสอบ Telegram และ Google Sheets');
- }catch(e){
-  alert('ถ้าเปิดจากไฟล์ในเครื่อง จะทดสอบไม่ได้ ต้องอัปโหลดขึ้น GitHub Pages ก่อน');
- }
+  const result = await response.text();
+
+  console.log(result);
+
+  alert('ส่งออเดอร์สำเร็จ!');
+
+} catch (err) {
+
+  console.log(err);
+
+  alert('เกิดข้อผิดพลาด');
+
+}
 }
 </script>
 </body>
